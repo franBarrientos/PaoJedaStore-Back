@@ -19,13 +19,18 @@ export class ProductService extends BaseService<Product> {
           id: category,
         },
       },
-      relations: {
-        category: true,
-      },
+      relations: ["category", "productsSizes", "productsSizes.size"],
       select: {
         category: {
           id: true,
           name: true,
+        },
+        productsSizes: {
+          id: true,
+          size: {
+            name: true,
+          },
+          quantity: true,
         },
       },
       skip,
@@ -35,12 +40,12 @@ export class ProductService extends BaseService<Product> {
   public async findByName(
     skip: number,
     limit: number,
-    name: string 
+    name: string
   ): Promise<[Product[], number]> {
     return (await this.repository).findAndCount({
       where: {
         stock: true,
-        name:Like(`%${name}%`)
+        name: Like(`%${name}%`),
       },
       relations: {
         category: true,
