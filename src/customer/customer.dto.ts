@@ -12,6 +12,9 @@ export class CustomerDto extends BaseDto {
   dni!: number;
   
   @IsNotEmpty()
+  phone!: string;
+  
+  @IsNotEmpty()
   user!: User;
 
   @IsOptional()

@@ -11,6 +11,9 @@ export class Customer extends BaseEntity {
   @Column()
   dni!: number;
 
+  @Column()
+  phone!: string;
+
   @OneToOne(()=>User, (user)=>user.customer)
   @JoinColumn()
   user!:User

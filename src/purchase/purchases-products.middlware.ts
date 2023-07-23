@@ -8,12 +8,13 @@ export class PurchasesProductsMiddlware {
     private readonly responseHttp: ResponseHttp = new ResponseHttp()
   ) {}
   validatePurchasesProducts(req: Request, res: Response, next: NextFunction) {
-    const { quantity, totalPrice, purchase, product } = req.body;
+    const { quantity, totalPrice, purchase, product, size } = req.body;
     const PurchasesProductsValidated = new PurchasesProductsDto();
     PurchasesProductsValidated.quantity = quantity;
     PurchasesProductsValidated.totalPrice = totalPrice;
     PurchasesProductsValidated.purchase = purchase;
     PurchasesProductsValidated.product = product;
+    PurchasesProductsValidated.size = size;
 
     validate(PurchasesProductsValidated).then((err) => {
       if (err.length > 0) {

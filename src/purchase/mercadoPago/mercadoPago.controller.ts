@@ -49,20 +49,10 @@ export class MercadoPagoController extends ServerConfig {
   public async recibeWebhook(req: Request, res: Response) {
     try {
       const query = req.query;
-      console.log(query);
-      console.log(query);
-      console.log(query);
-      console.log(query);
-
       if (query.type == "payment") {
         const data = await mercadopago.payment.findById(
           query["data.id"] as unknown as number
         );
-        console.log("Data");
-        console.log("Data");
-        console.log(data);
-        console.log(data);
-
         if (data.body.status == "approved") {
           const idPurchase = data.body.external_reference;
           await this.purchaseServide.updatePurchase(Number(idPurchase), {

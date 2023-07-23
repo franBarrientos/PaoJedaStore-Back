@@ -6,7 +6,7 @@ import { PurchasesProducts } from "./purchases-products.entity";
 @Entity()
 export class Purchase extends BaseEntity{
  
-    @Column()
+    @Column({nullable:false, default:"pendiente"})
     state!:string
     
     @Column()

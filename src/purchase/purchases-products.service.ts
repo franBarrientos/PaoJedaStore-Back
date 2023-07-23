@@ -19,6 +19,7 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
       relations: {
         purchase: true,
         product: true,
+        size:true
       },
       select: {
         purchase: {
@@ -33,6 +34,9 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
           name: true,
           price: true,
         },
+        size:{
+          name:true
+        }
       },
       skip,
       take: limit,
@@ -47,6 +51,7 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
       relations: {
         purchase: true,
         product: true,
+        size:true
       },
       select: {
         purchase: {
@@ -61,6 +66,9 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
           name: true,
           price: true,
         },
+        size:{
+          name:true
+        }
       },
     });
   }

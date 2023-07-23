@@ -14,7 +14,6 @@ export class ProductService extends BaseService<Product> {
   ): Promise<[Product[], number]> {
     return (await this.repository).findAndCount({
       where: {
-        stock: true,
         category: {
           id: category,
         },
@@ -37,6 +36,37 @@ export class ProductService extends BaseService<Product> {
       take: limit,
     });
   }
+
+  public async getProductsWithStock(
+    skip: number,
+    limit: number,
+    category: number
+  ): Promise<[Product[], number]> {
+    return (await this.repository)
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.category", "category")
+      .leftJoinAndSelect("product.productsSizes", "productsSizes")
+      .leftJoinAndSelect("productsSizes.size", "size")
+      .select([
+        "product.id",
+        "product.name",
+        "product.description",
+        "product.img",
+        "product.price",
+        "product.stock",
+        "category.id",
+        "category.name",
+        "productsSizes.id",
+        "productsSizes.quantity",
+        "size.id",
+        "size.name",
+      ])
+      .where("product.stock = :stock", { stock: true })
+      .andWhere("category.id = :category", { category })
+      .andWhere("productsSizes.quantity > :quantity", { quantity: 0 })
+      .getManyAndCount();
+  }
+
   public async findByName(
     skip: number,
     limit: number,
@@ -44,16 +74,49 @@ export class ProductService extends BaseService<Product> {
   ): Promise<[Product[], number]> {
     return (await this.repository).findAndCount({
       where: {
-        stock: true,
+        stock: true ,
         name: Like(`%${name}%`),
       },
-      relations: {
-        category: true,
-      },
+      relations: ["category", "productsSizes", "productsSizes.size"],
       select: {
         category: {
           id: true,
           name: true,
+        },
+        productsSizes: {
+          id: true,
+          size: {
+            name: true,
+          },
+          quantity: true,
+        },
+      },
+      skip,
+      take: limit,
+    });
+  }
+
+  public async findByNameAdmin(
+    skip: number,
+    limit: number,
+    name: string
+  ): Promise<[Product[], number]> {
+    return (await this.repository).findAndCount({
+      where: {
+        name: Like(`%${name}%`),
+      },
+      relations: ["category", "productsSizes", "productsSizes.size"],
+      select: {
+        category: {
+          id: true,
+          name: true,
+        },
+        productsSizes: {
+          id: true,
+          size: {
+            name: true,
+          },
+          quantity: true,
         },
       },
       skip,
@@ -66,12 +129,22 @@ export class ProductService extends BaseService<Product> {
       where: { id },
       relations: {
         category: true,
+        productsSizes:{
+          size:true
+        }
       },
       select: {
         category: {
           id: true,
           name: true,
         },
+        productsSizes:{
+          id:true,
+          size:{
+            name:true
+          },
+          quantity:true
+        }
       },
     });
   }

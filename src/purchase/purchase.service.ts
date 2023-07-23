@@ -18,6 +18,7 @@ export class PurchaseService extends BaseService<Purchase> {
         "customer.user",
         "purchasesProducts",
         "purchasesProducts.product",
+        "purchasesProducts.size",
       ],
       select: {
         customer: {
@@ -32,6 +33,9 @@ export class PurchaseService extends BaseService<Purchase> {
         purchasesProducts: {
           id: true,
           product: {
+            name: true,
+          },
+          size: {
             name: true,
           },
           quantity: true,
@@ -51,19 +55,26 @@ export class PurchaseService extends BaseService<Purchase> {
       where: { id },
       relations: {
         customer: true,
-        purchasesProducts: true,
+        purchasesProducts:{
+          product:true,
+          size:true
+        },
       },
       select: {
         customer: {
           id: true,
           dni: true,
           addres: true,
+          phone:true
         },
         purchasesProducts: {
           id: true,
           product: {
             id: true,
             name: true,
+          },
+          size:{
+            name:true
           },
           quantity: true,
           totalPrice: true,
@@ -81,7 +92,12 @@ export class PurchaseService extends BaseService<Purchase> {
           id,
         },
       },
-      relations: ["customer", "purchasesProducts", "purchasesProducts.product"],
+      relations: [
+        "customer",
+        "purchasesProducts",
+        "purchasesProducts.product",
+        "purchasesProducts.size",
+      ],
       select: {
         customer: {
           id: true,
@@ -91,6 +107,9 @@ export class PurchaseService extends BaseService<Purchase> {
         purchasesProducts: {
           id: true,
           product: {
+            name: true,
+          },
+          size: {
             name: true,
           },
           quantity: true,
@@ -107,12 +126,28 @@ export class PurchaseService extends BaseService<Purchase> {
     const dni = !isNaN(Number(name)) ? Number(name) : null;
     const queryBuilder = (await this.repository)
       .createQueryBuilder("purchase")
-      .leftJoinAndSelect("purchase.customer", "customer")
-      .leftJoinAndSelect("customer.user", "user")
-      .leftJoinAndSelect("purchase.purchasesProducts", "purchasesProducts")
-      .leftJoinAndSelect("purchasesProducts.product", "product")
+      .leftJoin("purchase.customer", "customer")
+      .leftJoin("customer.user", "user")
+      .leftJoin("purchase.purchasesProducts", "purchasesProducts")
+      .leftJoin("purchasesProducts.product", "product")
+      .leftJoin("purchasesProducts.size", "size")
+      .addSelect([
+        "state",
+        "payment",
+        "customer.id",
+        "customer.addres",
+        "customer.dni",
+        "customer.phone",
+        "user.firstName",
+        "user.email",
+        "purchasesProducts.id",
+        "purchasesProducts.quantity",
+        "purchasesProducts.totalPrice",
+        "product.name",
+        "size.name",
+      ])
       .where("user.firstName LIKE :name", { name: `%${name}%` })
-      .orWhere("user.email LIKE :email", { email: `%${name}%` })
+      .orWhere("user.email LIKE :email", { email: `%${name}%` });
     if (dni !== null) {
       queryBuilder.orWhere("customer.dni = :dni", { dni });
     }

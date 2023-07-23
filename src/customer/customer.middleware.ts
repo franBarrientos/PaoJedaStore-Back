@@ -8,12 +8,13 @@ export class CustomerMiddlware {
     private readonly responseHttp: ResponseHttp = new ResponseHttp()
   ) {}
   validateCustomer(req: Request, res: Response, next: NextFunction) {
-    const { addres, dni, user, purchases } = req.body;
+    const { addres, dni, user, purchases, phone } = req.body;
     const customerValidated = new CustomerDto();
     customerValidated.addres = addres;
     customerValidated.dni = dni;
     customerValidated.user = user;
     customerValidated.purchases = purchases;
+    customerValidated.phone = phone;
 
     validate(customerValidated).then((err) => {
       if (err.length > 0) {

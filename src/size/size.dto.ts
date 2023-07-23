@@ -10,8 +10,4 @@ export class UserDto extends BaseDto {
 
   @IsOptional()
   description?: string;
-
-  @IsOptional()
-  stock?: boolean;
-
 }

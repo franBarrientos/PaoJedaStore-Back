@@ -15,6 +15,28 @@ export class ProductController {
       const limit = req.query.limit ? Number(req.query.limit) : 9;
       const category = req.query.category ? Number(req.query.category) : 1;
       const ITEMS_PER_PAGE = (skip - 1) * 9;
+      const [products, total] = await this.productService.getProductsWithStock(
+        ITEMS_PER_PAGE,
+        limit,
+        category
+      );
+      if (products.length < 1)
+        return this.responseHttp.notFound(res, "Not Found", " Not Found");
+      this.responseHttp.oK(res, {
+        products,
+        total,
+        totalPages: Math.ceil(total / limit),
+      });
+    } catch (error) {
+      this.responseHttp.error(res, error, error);
+    }
+  }
+  async getAllAdmin(req: Request, res: Response) {
+    try {
+      const skip = req.query.skip ? Number(req.query.skip) : 1;
+      const limit = req.query.limit ? Number(req.query.limit) : 9;
+      const category = req.query.category ? Number(req.query.category) : 1;
+      const ITEMS_PER_PAGE = (skip - 1) * 9;
       const [products, total] = await this.productService.findAllProducts(
         ITEMS_PER_PAGE,
         limit,
@@ -37,8 +59,29 @@ export class ProductController {
       const limit = req.query.limit ? Number(req.query.limit) : 9;
       const name = req.query.name ? (req.query.name as string) : "";
       const ITEMS_PER_PAGE = (skip - 1) * 9;
-      console.log(name);
       const [products, total] = await this.productService.findByName(
+        ITEMS_PER_PAGE,
+        limit,
+        name
+      );
+      if (products.length < 1)
+        return this.responseHttp.notFound(res, "Not Found", " Not Found");
+      this.responseHttp.oK(res, {
+        products,
+        total,
+        totalPages: Math.ceil(total / limit),
+      });
+    } catch (error) {
+      this.responseHttp.error(res, error, error);
+    }
+  }
+  async getByNameAdmin(req: Request, res: Response) {
+    try {
+      const skip = req.query.skip ? Number(req.query.skip) : 1;
+      const limit = req.query.limit ? Number(req.query.limit) : 9;
+      const name = req.query.name ? (req.query.name as string) : "";
+      const ITEMS_PER_PAGE = (skip - 1) * 9;
+      const [products, total] = await this.productService.findByNameAdmin(
         ITEMS_PER_PAGE,
         limit,
         name
