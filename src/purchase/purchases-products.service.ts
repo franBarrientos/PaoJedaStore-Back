@@ -19,7 +19,7 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
       relations: {
         purchase: true,
         product: true,
-        size:true
+        size: true,
       },
       select: {
         purchase: {
@@ -34,9 +34,9 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
           name: true,
           price: true,
         },
-        size:{
-          name:true
-        }
+        size: {
+          name: true,
+        },
       },
       skip,
       take: limit,
@@ -51,7 +51,7 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
       relations: {
         purchase: true,
         product: true,
-        size:true
+        size: true,
       },
       select: {
         purchase: {
@@ -66,9 +66,9 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
           name: true,
           price: true,
         },
-        size:{
-          name:true
-        }
+        size: {
+          name: true,
+        },
       },
     });
   }
@@ -87,7 +87,7 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
 
   public async getCategorysMostSales(): Promise<any[]> {
     return (await this.repository)
-    .createQueryBuilder("purchaseProduct")
+      .createQueryBuilder("purchaseProduct")
       .leftJoinAndSelect("purchaseProduct.product", "product")
       .leftJoinAndSelect("product.category", "category")
       .select("category.name", "categoryName")
@@ -95,6 +95,17 @@ export class PurchasesProductsService extends BaseService<PurchasesProducts> {
       .groupBy("category.name")
       .orderBy("totalQuantity", "DESC")
       .limit(5)
+      .getRawMany();
+  }
+
+  public async getStadisticsLast10days(): Promise<any[]> {
+    return (await this.repository)
+      .createQueryBuilder("purchaseProduct")
+      .select("DATE(purchaseProduct.createdAt) as date")
+      .addSelect('SUM(purchaseProduct.totalPrice) as totalSales')
+      .groupBy("date")
+      .orderBy("date", "ASC")
+      .limit(10)
       .getRawMany();
   }
 

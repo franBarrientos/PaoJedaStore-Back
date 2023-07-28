@@ -9,18 +9,39 @@ export class CategoryService extends BaseService<Category> {
   }
 
   public async findAllCategories(
-    skip: number,
-    limit: number
+    isAdmin: boolean = false
   ): Promise<Category[]> {
+    let where;
+    if (!isAdmin) {
+      where = {
+        state: true,
+      };
+    } else {
+      where = {};
+    }
+
     return (await this.repository).find({
-      skip,
-      take: limit,
+      where,
     });
   }
 
-  public async findCategoryById(id: number): Promise<Category | null> {
+  public async findCategoryById(
+    id: number,
+    isAdmin: boolean = false
+  ): Promise<Category | null> {
+    let where;
+    if (!isAdmin) {
+      where = {
+        state: true,
+        id,
+      };
+    } else {
+      where = {
+        id,
+      };
+    }
     return (await this.repository).findOne({
-      where: { id },
+      where,
     });
   }
 

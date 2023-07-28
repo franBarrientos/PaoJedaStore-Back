@@ -13,9 +13,13 @@ export class ProductRouter extends BaseRouter<
   routes(): void {
     this.router
       .get("/product", (req, res) => this.controller.getAll(req, res))
-      .get("/productAdmin", (req, res) => this.controller.getAllAdmin(req, res))
+      .get("/productAdmin",
+      (req, res, next) => [this.middleware.checkAdminRole(req, res, next)],
+      (req, res) => this.controller.getAllAdmin(req, res))
       .get("/product/byName", (req, res) => this.controller.getByName(req, res))
-      .get("/product/byNameAdmin", (req, res) => this.controller.getByNameAdmin(req, res))
+      .get("/product/byNameAdmin",
+      (req, res, next) => [this.middleware.checkAdminRole(req, res, next)],
+      (req, res) => this.controller.getByNameAdmin(req, res))
       .get("/product/:id", (req, res) => this.controller.get(req, res))
       .post(
         "/product",

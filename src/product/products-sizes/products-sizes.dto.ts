@@ -14,3 +14,8 @@ export class ProductsSizesDto extends BaseDto {
   @IsNotEmpty()
   product!: Product;
 }
+
+export class ProductsSizesDtoArr {
+    @IsNotEmpty()
+    sizesArrToQuery!:ProductsSizesDto[]
+}

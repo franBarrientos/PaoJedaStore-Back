@@ -1,22 +1,21 @@
 import { Request, Response } from "express";
-import { ResponseHttp } from "../../config/responses.http";
-import { ProductsSizesService } from "./products-sizes.service";
+import { ResponseHttp } from "../config/responses.http";
+import { SizeService } from "./size.service";
 
-export class ProductsSizesController {
+export class SizeController {
   constructor(
-    private readonly productsSizesService: ProductsSizesService = new ProductsSizesService(),
-    private readonly responseHttp: ResponseHttp = new ResponseHttp()
+    private readonly responseHttp: ResponseHttp = new ResponseHttp(),
+    private readonly sizeService: SizeService = new SizeService(),
   ) {}
 
   async getAll(req: Request, res: Response) {
     try {
-      const skip = req.query.skip ? Number(req.query.skip) : 0;
-      const limit = req.query.limit ? Number(req.query.limit) : 15;
-      const productsSizes =
-        await this.productsSizesService.findAllProductsSizes(skip, limit);
-      if (productsSizes.length < 1)
+      const sizes = await this.sizeService.findAllSize();
+      if (sizes.length < 1)
         return this.responseHttp.notFound(res, "Not Found", " Not Found");
-      this.responseHttp.oK(res, productsSizes);
+      this.responseHttp.oK(res, [
+        ...sizes
+      ]);
     } catch (error) {
       this.responseHttp.error(res, error, error);
     }
@@ -25,21 +24,19 @@ export class ProductsSizesController {
   async get(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const productsSizes =
-        await this.productsSizesService.findProductsSizesById(id);
-      if (!productsSizes)
+      const purchase = await this.sizeService.findSizeById(id);
+      if (!purchase)
         return this.responseHttp.notFound(res, "Not Found", id + " Not Found");
-      this.responseHttp.oK(res, productsSizes);
+      this.responseHttp.oK(res, purchase);
     } catch (error) {
       this.responseHttp.error(res, error, error);
     }
   }
+
   async create(req: Request, res: Response) {
     try {
-        console.log(req.body)
-      const newProductsSizes =
-        await this.productsSizesService.createProductsSizes(req.body);
-      this.responseHttp.created(res, newProductsSizes);
+      const newSize = await this.sizeService.createSize(req.body);
+      this.responseHttp.created(res, newSize);
     } catch (error) {
       this.responseHttp.error(res, error, error);
     }
@@ -47,8 +44,7 @@ export class ProductsSizesController {
   async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const responseUpdate =
-        await this.productsSizesService.updateProductsSizes(id, req.body);
+      const responseUpdate = await this.sizeService.updateSize(id, req.body);
       if (responseUpdate.affected == 0)
         return this.responseHttp.notFound(res, "Not Found", id + " Not Found");
       this.responseHttp.oK(res, responseUpdate);
@@ -59,8 +55,7 @@ export class ProductsSizesController {
   async delete(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const responseDelete =
-        await this.productsSizesService.deleteProductsSizes(id);
+      const responseDelete = await this.sizeService.deleteSize(id);
       if (responseDelete.affected == 0)
         return this.responseHttp.notFound(res, "Not Found", id + " Not Found");
       this.responseHttp.oK(res, responseDelete);

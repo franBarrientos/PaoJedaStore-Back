@@ -32,12 +32,11 @@ export class MercadoPagoController extends ServerConfig {
         items: carritoMp,
         external_reference: `${idPurchase}`,
         back_urls: {
-          failure: "https://lyjjoyas.vercel.app/",
-          success: "https://lyjjoyas.vercel.app/",
-          pending: "https://lyjjoyas.vercel.app/",
+          failure: this.getEnvironmet("URL_FRONT")!,
+          success: this.getEnvironmet("URL_FRONT")!,
+          pending: this.getEnvironmet("URL_FRONT")!,
         },
-        notification_url:
-          "https://ecommerce-backv3-production.up.railway.app/api/webhook",
+        notification_url: this.getEnvironmet("URL_BACK")!,
       });
 
       this.responseHttp.oK(res, { urlMercadoPago: response.body.init_point });

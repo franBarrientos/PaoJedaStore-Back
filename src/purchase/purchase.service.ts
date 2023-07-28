@@ -25,6 +25,7 @@ export class PurchaseService extends BaseService<Purchase> {
           id: true,
           dni: true,
           addres: true,
+          phone: true,
           user: {
             firstName: true,
             email: true,
@@ -55,9 +56,9 @@ export class PurchaseService extends BaseService<Purchase> {
       where: { id },
       relations: {
         customer: true,
-        purchasesProducts:{
-          product:true,
-          size:true
+        purchasesProducts: {
+          product: true,
+          size: true,
         },
       },
       select: {
@@ -65,7 +66,7 @@ export class PurchaseService extends BaseService<Purchase> {
           id: true,
           dni: true,
           addres: true,
-          phone:true
+          phone: true,
         },
         purchasesProducts: {
           id: true,
@@ -73,8 +74,8 @@ export class PurchaseService extends BaseService<Purchase> {
             id: true,
             name: true,
           },
-          size:{
-            name:true
+          size: {
+            name: true,
           },
           quantity: true,
           totalPrice: true,
@@ -103,6 +104,7 @@ export class PurchaseService extends BaseService<Purchase> {
           id: true,
           dni: true,
           addres: true,
+          phone: true,
         },
         purchasesProducts: {
           id: true,

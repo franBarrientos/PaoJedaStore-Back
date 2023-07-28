@@ -11,12 +11,9 @@ export class CategoryController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const skip = req.query.skip ? Number(req.query.skip) : 0;
-      const limit = req.query.limit ? Number(req.query.limit) : 20;
+      const isAdmin = req.query.isAdmin ? true : false;
       const categories = await this.categoryService.findAllCategories(
-        skip,
-        limit
-      );
+        isAdmin      );
       if (categories.length < 1)
         return this.responseHttp.notFound(res, "Not Found", " Not Found");
       this.responseHttp.oK(res, categories);
@@ -28,7 +25,8 @@ export class CategoryController {
   async get(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const category = await this.categoryService.findCategoryById(id);
+      const isAdmin = req.query.isAdmin ? true : false;
+      const category = await this.categoryService.findCategoryById(id, isAdmin);
       if (!category)
         return this.responseHttp.notFound(res, "Not Found", id + " Not Found");
       this.responseHttp.oK(res, category);

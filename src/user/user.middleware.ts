@@ -11,7 +11,7 @@ export class UserMiddlware extends AuthMiddleware {
     super();
   }
   validateUser(req: Request, res: Response, next: NextFunction) {
-    const { age, city, email, firstName, lastName, password, province, role } =
+    const { age, city, email, firstName, lastName, password, province } =
       req.body;
     const userValidated = new UserDto();
     userValidated.age = age || null;
@@ -25,7 +25,6 @@ export class UserMiddlware extends AuthMiddleware {
     validate(userValidated).then((err) => {
       if (err.length > 0) {
         console.log(err);
-        console.log("dadasdasd");
         return this.responseHttp.error(res, err);
       } else {
         next();

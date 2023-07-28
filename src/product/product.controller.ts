@@ -2,11 +2,12 @@ import { ResponseHttp } from "../config/responses.http";
 import { ProductDto } from "./product.dto";
 import { ProductService } from "./product.service";
 import { Request, Response } from "express";
+import { ProductsSizesService } from "./products-sizes/products-sizes.service";
 
 export class ProductController {
   constructor(
     private readonly productService: ProductService = new ProductService(),
-    private readonly responseHttp: ResponseHttp = new ResponseHttp()
+    private readonly responseHttp: ResponseHttp = new ResponseHttp(),
   ) {}
 
   async getAll(req: Request, res: Response) {

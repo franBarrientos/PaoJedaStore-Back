@@ -28,6 +28,8 @@ export class ProductService extends BaseService<Product> {
           id: true,
           size: {
             name: true,
+            id:true
+
           },
           quantity: true,
         },
@@ -87,6 +89,8 @@ export class ProductService extends BaseService<Product> {
           id: true,
           size: {
             name: true,
+            id:true
+
           },
           quantity: true,
         },
@@ -115,6 +119,8 @@ export class ProductService extends BaseService<Product> {
           id: true,
           size: {
             name: true,
+            id:true
+
           },
           quantity: true,
         },
@@ -141,7 +147,8 @@ export class ProductService extends BaseService<Product> {
         productsSizes:{
           id:true,
           size:{
-            name:true
+            name:true,
+            id:true
           },
           quantity:true
         }

@@ -12,6 +12,7 @@ import { PurchasesProductRouter } from "./purchase/purchases-products.router";
 import { AuthRouter } from "./auth/auth.router";
 import fileUpload from "express-fileupload";
 import { ProductsSizesRouter } from "./product/products-sizes/products-sizes.router";
+import { SizeRouter } from "./size/size.router";
 class ServerBoostrap extends ServerConfig {
   public app: express.Application = express();
   private port: number = this.getPort;
@@ -40,7 +41,8 @@ class ServerBoostrap extends ServerConfig {
       new PurchaseRouter().router,
       new PurchasesProductRouter().router,
       new AuthRouter().router,
-      new ProductsSizesRouter().router
+      new ProductsSizesRouter().router,
+      new SizeRouter().router
     ];
   }
 

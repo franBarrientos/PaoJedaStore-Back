@@ -14,5 +14,8 @@ export class CategoryDto extends BaseDto {
     img!:string
 
     @IsOptional()
+    state?:boolean
+
+    @IsOptional()
     products!:Product[]
 }

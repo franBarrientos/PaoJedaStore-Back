@@ -21,8 +21,8 @@ export class UserDto extends BaseDto {
   @IsOptional()
   age?: number;
 
-  @IsNotEmpty()
-  role!: RoleType;
+  @IsOptional()
+  role?: RoleType;
 
   @Length(3, 30)
   @IsOptional()

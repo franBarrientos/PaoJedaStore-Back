@@ -17,15 +17,20 @@ export class ProductsSizesRouter extends BaseRouter<
       )
       .post(
         "/productsSizes",
+        (req, res, next) => [this.middleware.checkAdminRole(req, res, next)],
         (req, res, next) => [
           this.middleware.validateProductsSizes(req, res, next),
         ],
         (req, res) => this.controller.create(req, res)
       )
-      .put("/productsSizes/:id", (req, res) =>
+      .put("/productsSizes/:id",
+      (req, res, next) => [this.middleware.checkAdminRole(req, res, next)],
+      (req, res) =>
         this.controller.update(req, res)
       )
-      .delete("/productsSizes/:id", (req, res) =>
+      .delete("/productsSizes/:id",
+      (req, res, next) => [this.middleware.checkAdminRole(req, res, next)],
+      (req, res) =>
         this.controller.delete(req, res)
       );
   }

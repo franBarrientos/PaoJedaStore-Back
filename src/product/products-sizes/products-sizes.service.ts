@@ -1,4 +1,4 @@
-import { DeleteResult, UpdateResult } from "typeorm";
+import { DeleteResult, InsertResult, UpdateResult } from "typeorm";
 import { BaseService } from "../../config/base.service";
 import { ProductsSizes } from "./products-sizes.entity";
 import { ProductsSizesDto } from "./products-sizes.dto";
@@ -57,9 +57,9 @@ export class ProductsSizesService extends BaseService<ProductsSizes> {
   }
 
   public async createProductsSizes(
-    body: ProductsSizesDto
-  ): Promise<ProductsSizes> {
-    return (await this.repository).save(body);
+    body: any
+  ): Promise<InsertResult> {
+    return (await this.repository).insert(body.sizesArrToQuery);
   }
 
   public async deleteProductsSizes(id: number): Promise<DeleteResult> {

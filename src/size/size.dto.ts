@@ -4,7 +4,7 @@ import { Product } from "../product/product.entity";
 import { sizesType } from "./size.entity";
 import { ProductsSizes } from "../product/products-sizes/products-sizes.entity";
 
-export class UserDto extends BaseDto {
+export class SizeDto extends BaseDto {
   @IsNotEmpty()
   name!: sizesType;
 

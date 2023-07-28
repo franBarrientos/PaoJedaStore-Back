@@ -111,6 +111,8 @@ export class PurchaseController {
     try {
       const stadisticsProducts =
         await this.purchaseService.getProductsMostSales();
+      const stadisticsLast10days =
+        await this.purchaseProductsService.getStadisticsLast10days();
       const stadisticsCategory =
         await this.purchaseProductsService.getCategorysMostSales();
 
@@ -122,7 +124,7 @@ export class PurchaseController {
         return this.responseHttp.notFound(res, "Not Found", " Not Found");
         console.log(stadisticsProducts);
       }
-      this.responseHttp.oK(res, { stadisticsProducts, stadisticsCategory });
+      this.responseHttp.oK(res, { stadisticsProducts, stadisticsCategory,stadisticsLast10days });
     } catch (error) {
       this.responseHttp.error(res, error, error);
     }
