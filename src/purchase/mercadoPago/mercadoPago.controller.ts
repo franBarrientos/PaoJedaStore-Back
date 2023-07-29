@@ -36,7 +36,7 @@ export class MercadoPagoController extends ServerConfig {
           success: this.getEnvironmet("URL_FRONT")!,
           pending: this.getEnvironmet("URL_FRONT")!,
         },
-        notification_url: `${this.getEnvironmet("URL_BACK")!}/api/webhook`,
+        notification_url: `${this.getEnvironmet("URL_BACK")!}api/webhook`,
       });
 
       this.responseHttp.oK(res, { urlMercadoPago: response.body.init_point });
